@@ -1,0 +1,390 @@
+<html>
+    <head>
+        <title>Example Code (D3)</title>
+         <link rel="stylesheet" href="AdditionalInfo.css" type="text/css"/>
+                 <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="jquery.csv.min.js"></script>
+        
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+        
+        <script>
+            currentTaskName = "d3";
+            currentTaskNum = 1;
+        </script>        
+        
+        <script src="AdditionalInfo.js"></script>
+    </head>
+    <body class="container">
+        <header><h1>Annotated Code</h1></header>
+        <div class="row">
+        <div class="col-sm-6">
+            Source Code
+        <div id="source-code">
+          
+        <strong>HTML</strong>:   
+        <code class="source-code"><pre>
+var svg = d3.<span class="highlight fact1">select</span>(&#x22;svg&#x22;),
+    diameter = +svg.<span class="highlight fact2">attr</span>(&#x22;width&#x22;),
+    g = svg.<span class="highlight fact3">append</span>(&#x22;g&#x22;).<span class="highlight fact2">attr</span>(&#x22;transform&#x22;, &#x22;translate(2,14)&#x22;),
+    format = d3.<span class="highlight fact11">format(&#x22;,d&#x22;)</span>;
+
+<span class="highlight template3">var pack = d3.<span class="highlight concept1 concept2 concept3 concept4 fact6">pack</span>()</span>
+    .<span class="highlight fact9">size</span>([diameter - 4, diameter - 16]);
+
+<span class="highlight fact10">d3.json</span>(&#x22;flare.json&#x22;, function(error, root) {
+  if (error) throw error;
+
+  <span class="highlight template3">root = d3.<span class="highlight concept1">hierarchy</span>(root)
+      .<span class="highlight fact4">sum</span>(function(d) { return d.size; })
+      .<span class="highlight fact5">sort</span>(function(a, b) { return b.value - a.value; });</span>
+
+  <span class="highlight template3">var node = g.<span class="highlight template2">selectAll(&#x22;.node&#x22;)
+    .data(<span class="highlight concept1 concept2 concept3 concept4 fact7">pack(root)</span>.<span class="highlight fact8">descendants()</span>)
+    .enter().<span class="highlight fact3 template4">append</span>(&#x22;g&#x22;)</span></span>
+      <span class="highlight template4">.<span class="highlight fact2">attr</span>(&#x22;class&#x22;, function(d) { return d.children ? &#x22;node&#x22; : &#x22;leaf node&#x22;; })
+      .<span class="highlight fact2">attr</span>(&#x22;transform&#x22;, function(d) { return <span class="highlight template3">&#x22;translate(&#x22; + d.x + &#x22;,&#x22; + d.y + &#x22;)&#x22;; </span> });</span>
+
+  <span class="highlight template5">node.<span class="highlight fact3">append</span>(&#x22;title&#x22;)
+      .<span class="highlight fact20001">text</span>(function(d) { return d.data.name + &#x22;\n&#x22; + format(d.value); });</span>
+
+  <span class="highlight template3 template4">node.<span class="highlight fact3">append</span>(&#x22;circle&#x22;)
+      .<span class="highlight fact2">attr</span>(&#x22;r&#x22;, function(d) { return d.r; });</span>
+
+  node.<span class="highlight fact12">filter</span>(function(d) { return !d.children; }).<span class="highlight template5"><span class="highlight template4"><span class="highlight fact3">append</span>(&#x22;text&#x22;)
+      .<span class="highlight fact2">attr</span>(&#x22;dy&#x22;, &#x22;0.3em&#x22;)</span>
+      .<span class="highlight fact20001">text</span>(function(d) { return d.data.name.substring(0, d.r / 3); });</span>
+});
+
+<span class="highlight template4 template5">svg.<span class="highlight fact3">append</span>("text")
+      .<span class="highlight fact20001">text</span>("Flare")
+      .<span class="highlight fact2">attr</span>("dx", diameter/2 + "px")
+      .<span class="highlight fact2">attr</span>("dy", diameter + "px");</span>
+
+        </pre></code>
+        <strong>JSON</strong>:   
+        <code class="source-code"><pre>
+<span class="highlight template3">
+{
+ "name": "flare",
+ "children": [
+  {
+   "name": "analytics",
+   "children": [
+    {
+     "name": "cluster",
+     "children": [
+      {"name": "AgglomerativeCluster", "size": 3938},
+      {"name": "CommunityStructure", "size": 3812},
+      {"name": "HierarchicalCluster", "size": 6714},
+      {"name": "MergeEdge", "size": 743}
+     ]
+    },
+    {
+     "name": "graph",
+     "children": [
+      {"name": "BetweennessCentrality", "size": 3534},
+      {"name": "LinkDistance", "size": 5731},
+      {"name": "MaxFlowMinCut", "size": 7840},
+      {"name": "ShortestPaths", "size": 5914},
+      {"name": "SpanningTree", "size": 3416}
+     ]
+    },
+    {
+     "name": "optimization",
+     "children": [
+      {"name": "AspectRatioBanker", "size": 7074}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "animate",
+   "children": [
+    {"name": "Easing", "size": 17010},
+    {"name": "FunctionSequence", "size": 5842},
+    {
+     "name": "interpolate",
+     "children": [
+      {"name": "ArrayInterpolator", "size": 1983},
+      {"name": "ColorInterpolator", "size": 2047},
+      {"name": "DateInterpolator", "size": 1375},
+      {"name": "Interpolator", "size": 8746},
+      {"name": "MatrixInterpolator", "size": 2202},
+      {"name": "NumberInterpolator", "size": 1382},
+      {"name": "ObjectInterpolator", "size": 1629},
+      {"name": "PointInterpolator", "size": 1675},
+      {"name": "RectangleInterpolator", "size": 2042}
+     ]
+    },
+    {"name": "ISchedulable", "size": 1041},
+    {"name": "Parallel", "size": 5176},
+    {"name": "Pause", "size": 449},
+    {"name": "Scheduler", "size": 5593},
+    {"name": "Sequence", "size": 5534},
+    {"name": "Transition", "size": 9201},
+    {"name": "Transitioner", "size": 19975},
+    {"name": "TransitionEvent", "size": 1116},
+    {"name": "Tween", "size": 6006}
+   ]
+  }
+ ]
+}</span>
+        </pre></code>
+        
+        </div></div>
+        
+        
+        
+        <div class="col-sm-6 right-col">
+            <div id="annotation-header">
+            <div>Annotations</div>
+            <div>Search: <div class="btn-group">
+                      <input id="searchinput" type="search" class="form-control">
+                      <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                    </div>
+            </div>
+            </div>
+            <div id="annotations">
+              
+            <!--<div class="annotation concept0">
+                <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>D3.js</dt>
+                    <dd>D3.js is a JavaScript library for manipulating documents based on data. D3 helps you bring data to life using HTML, SVG, and CSS. D3 allows you to bind arbitrary data to a Document Object Model (DOM), and then apply data-driven transformations to the document.</dd>
+                </dl>
+            </div>-->
+            
+            <div class="annotation concept1">
+                <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Hierarchy</dt>
+                    <dd>An arrangement of items in which the items are represented as being "above", "below", or "at the same level as" one another. In D3 hierarchies, every item except the "root" item has a single "parent" item it belongs to. Items may have many "children." A node's "descendants" are its children, its children's children, etc. </dd>
+                </dl>
+            </div>
+            <div class="annotation concept2">
+                <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Enclosure diagrams</dt>
+                    <dd>Use containment (nesting) to represent a hierarchy. Children are displayed within their parent nodes.</dd>
+                </dl>
+            </div>
+            <div class="annotation concept3">
+              <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Circle packing</dt>
+                    <dd>the arrangement of circles (of equal or varying sizes) on  such that no overlapping occurs and so that all circles touch one another.</dd>
+                </dl>
+            </div>
+            <div class="annotation concept4">
+              <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Pack layout</dt>
+                    <dd>an enclosure diagram that uses nested circles with circle packing to represent a hierarchy.</dd>
+                </dl>
+            </div>
+              
+              
+              <div class="annotation template2">
+                <h5 class="template">Template</h5>
+                Create HTML elements of type <em>tagName</em> (matching <em>selector</em>) that correspond to the given <em>data</em>. <br>
+                JS:
+                <code><pre>
+<em class="note">//define how to select the elements that will be created</em>
+.selectAll(<em>selector</em>)
+    <em class="note">// bind data</em>
+    .data(<em>data</em>) 
+    <em class="note">// for new or initial data, create the elements</em>
+    .enter().append(<em>tagName</em>) 
+                </pre></code>
+              </div>
+              
+              <div class="annotation template3">
+                <h5 class="template">Template</h5>
+                Create a pack graph <br>
+                JSON (created in own file or in JS):
+<code><pre>
+<em class="note">// Create JSON data or object</em>
+{
+  <em class="note">// data fields for root node go here</em>
+  "children": [
+    {
+      <em class="note">// data fields for child 1 go here</em>
+      "children": [<em class="elipses">...</em>]
+    },
+    <em class="elipses">...</em>
+  ]
+}
+</pre></code>
+                JS:
+                <code><pre>
+<em class="note">// create a pack layout</em>                
+var pack = d3.pack()
+    .size(<em>size</em>);
+    
+<em class="note">// create a hierarchy from the data</em>
+root = d3.hierarchy(<em>jsonData</em>)
+      .sum(<em>valueFunction</em>) <em class="note">// compute values for each node</em>
+      .sort(<em>sortFunction</em>); <em class="note">// sort the nodes for display</em>
+<em class="elipses">...</em>   
+<em class="note">//bind packed nodes to circles</em>
+<em>selector</em>.selectAll(<em>selector</em>)
+    .data(pack(root).descendants())
+    .enter()
+<em class="elipses">...</em>
+    append("circle")
+    <em class="note">// set the radius of a circle to the node value</em>
+    .attr("r", function(d) { return d.r; }); 
+    <em class="note">//also uses d.x and d.y somewhere to layout x and y coordinates</em>
+                </pre></code>
+              </div>
+              
+              <div class="annotation template4">
+                <h5 class="template">Template</h5>
+                Create HTML an element of type <em>tagName</em> and sets attributes on it. <br>
+                JS:
+                <code><pre>
+<em>node</em>.append(<em>tagName</em>) <em class="note">// create node</em>
+       .attr(<em>attribute</em>, <em>value</em>) <em class="note">// set attribute</em>
+       .attr(<em>attribute</em>, <em>value</em>)
+       <em class="elipses">...</em>
+                </pre></code>
+              </div>
+              
+              <div class="annotation template5">
+                <h5 class="template">Template</h5>
+                Create HTML an element of type <em>tagName</em> and set its text. <br>
+                JS:
+                <code><pre>
+<em>node</em>.append(<em>tagName</em>) <em class="note">// create node</em>
+       .text(<em>value</em>) <em class="note">// set text of the node</em>
+       <em class="elipses">...</em>
+                </pre></code>
+              </div>
+              
+              
+              <div class="annotation fact1">
+                <h5 class="fact">Fact</h5>
+                <code>d3.select(<em>selector</em>)</code>
+                <p>Select an element from the HTML DOM</p>
+                <small>Selects the first element that matches the specified selector string. If no elements match the selector, returns an empty selection. If multiple elements match the selector, only the first matching element (in document order) will be selected.</small>
+              </div>
+              
+              <div class="annotation fact2">
+                <h5 class="fact">Fact</h5>
+                <code><em>selection</em>.attr(<em>name</em>[, <em>value</em>])</code>
+                <p>Get or set an attribute</p>
+                <ul>
+                    <li><code>name</code>: The name of the attribute to get or set</li>
+                    <li><code>value</code>: The value to set the attribute to. If the value is a constant, all elements are given the same attribute value; otherwise, if the value is a function, it is evaluated for each selected element, in order, being passed the current datum (d), the current index (i), and the current group (nodes), with this as the current DOM element (nodes[i]). The function's return value is then used to set each element's attribute. A null value will remove the specified attribute.</li>
+                </ul>
+              </div>
+              
+              <div class="annotation fact20001">
+                <h5 class="fact">Fact</h5>
+                <code><em>selection</em>.text(<em>value</em>)</code>
+                <p>If a value is specified, sets the text content to the specified value on all selected elements, replacing any existing child elements. </p>
+                <p>If the value is a constant, then all elements are given the same text content; otherwise, if the value is a function, it is evaluated for each selected element, in order, being passed the current datum (d), the current index (i), and the current group (nodes), with this as the current DOM element (nodes[i]).</p>
+              </div>
+              
+              <div class="annotation fact6">
+                <h5 class="fact">Fact</h5>
+                <code>d3.pack()</code>
+                <p> Creates a new pack layout with the default settings.</p>
+              </div>
+              
+              <div class="annotation fact9">
+                <h5 class="fact">Fact</h5>
+                <code><em>packLayout</em>.size(<em>[size]</em>)</code>
+                <p>If <code>size</code> is specified, sets the overall size of the packLayout to the specified two-element array of numbers [width, height] and returns this pack layout. If size is not specified, returns the current size, which defaults to [1, 1].</p>
+              </div>
+              
+              <div class="annotation fact10">
+                <h5 class="fact">Fact</h5>
+                <code>d3.json(<em>url</em>[, <em>callbackFunction</em>])</code>
+                <p>the JSON file at the specified <code>url</code>. Runs the <code>callbackFunction</code> when the JSON file is loaded.</p>
+                <p>The <code>callbackFunction</code> should take two parameters: the first contains errors, and the second contains the loaded JSON data.</p>
+              </div>
+             
+              
+              <div class="annotation fact4">
+                <h5 class="fact">Fact</h5>
+                <code><em>hierarchyNode</em>.sum(<em>valueFunction</em>)</code>
+                <p>Evaluates the specified <code>valueFunction</code> for this node and each descendant. The <code>valueFunction</code> takes one parameter, which is the node's data.</p>
+                <p>Sets the <code>value</code> attribute of this node to be the sum of the <code>valueFunction</code> for it and all it's descendants.</p>
+                <p>Returns this node (to allow method chaining).</p>
+                <p>You must call node.sum or node.count before invoking a hierarchical layout that requires node.value</p>
+              </div>
+              
+              <div class="annotation fact5">
+                <h5 class="fact">Fact</h5>
+                <code><em>hierarchyNode</em>.sort(<em>compareFunction</em>)</code>
+                <p>Sorts the children of this node, if any, and each of this node's descendants' children, in pre-order traversal using the specified <code>compareFunction</code>, and returns this node.</p>
+                <p>The specified function is passed two nodes <code>a</code> and <code>b</code> to compare. <code>a</code> and <code>b</code> are nodes (unlike <code>sum(<em>valueFunction</em>)</code> which gets just the nodes' data). If a should be before b, the function must return a value less than zero; if b should be before a, the function must return a value greater than zero</p>
+                <p>You must call node.sort before invoking a hierarchical layout if you want the new sort order to affect the layout.</p>
+              </div>
+              
+              <div class="annotation fact7">
+                <h5 class="fact">Fact</h5>
+                <code><em>packLayout</em>.pack(<em>root</em>)</code>
+                <p>Lays out the specified root hierarchy, assigning the following properties on root and its descendants:</p>
+                <ul>
+                    <li>node.x - the x-coordinate of the circle's center</li>
+                    <li>node.y - the y-coordinate of the circle's center</li>
+                    <li>node.r - the radius of the circle (based on the node's <code>value</code>)</li>
+                </ul>
+                    <p>
+                        You must call <code>root.sum</code> before passing the hierarchy to the pack layout in order to set the <code>value</code> of each node determining the node's size. 
+                        You probably also want to call <code>>root.sort</code to order the hierarchy before computing the layout (First nodes go in the center, last nodes go on the outside).
+                    </p>
+              </div>
+              
+              <div class="annotation fact8">
+                <h5 class="fact">Fact</h5>
+                <code><em>packLayout</em>.descendants()</code>
+                <p>Returns the array of descendant nodes, starting with this node, then followed by each child in topological order.</p>
+              </div>
+              
+              <div class="annotation fact3">
+                <h5 class="fact">Fact</h5>
+                <code><em>selection</em>.append(<em>type</em>)</code>
+                <p>Create, append and select new elements</p>
+                <ul>
+                    <li><code>type</code>: The type of HTML node to create. If the specified type is a string, appends a new element of this type (tag name) as the last child of each selected element, or before the next following sibling in the update selection if this is an enter selection. The latter behavior for enter selections allows you to insert elements into the DOM in an order consistent with the new bound data.</li>
+                </ul>
+              </div>
+
+             <div class="annotation fact11">
+                <h5 class="fact">Fact</h5>
+                <code>d3.format(<em>specifier</em>)</code>
+                <p>Returns a new format function for the given string specifier. The returned function takes a number as the only argument, and returns a string representing the formatted number.</p>
+                <p>The <code>specifier</code> is formed as follows: <br><code>[[fill]align][sign][symbol][0][width][,][.precision][type]</code></p>
+                <p>For example: sopme possible types include:</p>
+                <ul>
+                    <li><code>e</code>: exponent notation.</li>
+                    <li><code>%</code>: multiply by 100, and then decimal notation with a percent sign.</li>
+                    <li><code>d</code>: decimal notation, rounded to integer.</li>
+                </ul>
+              </div>
+              
+               <div class="annotation fact12">
+                <h5 class="fact">Fact</h5>
+                <code><em>selection</em>.filter(<em>filter</em>)</code>
+                <p>Filters the selection, returning a new selection that contains only the elements for which the specified <code>filter</code> is true.</p>
+                <p>The <code>filter</code> may be specified either as a selector string or a function. If the <code>filter</code> is a function, it is evaluated for each selected element, in order, being passed the current datum (d), the current index (i), and the current group (nodes), with this as the current DOM element (nodes[i]).</p>
+              </div>
+              
+            </div>
+        </div>
+        </div>
+		<footer>
+		Code example derived from: <a href="https://observablehq.com/@d3/circle-packing" target="_blank">https://observablehq.com/@d3/circle-packing</a>. Some annotations are based on content from the <a href="https://github.com/d3/d3/blob/master/API.md" target="_blank">D3 documentation</a>, <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>, or <a href="https://www.wiktionary.org/" target="_blank">Wiktionary</a>.
+		</footer>
+    </body>
+</html>

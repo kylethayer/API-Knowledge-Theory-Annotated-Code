@@ -1,0 +1,613 @@
+<html>
+    <head>
+        <title>Example Code (ThreeJS)</title>
+         <link rel="stylesheet" href="AdditionalInfo.css" type="text/css"/>
+                 <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="jquery.csv.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+        
+        <script>
+            currentTaskName = "threeJs";
+            currentTaskNum = 2;
+        </script>   
+        
+        <script src="AdditionalInfo.js"></script>
+    </head>
+    <body class="container">
+        <header><h1>Annotated Code</h1></header>
+        <div class="row">
+        <div class="col-sm-6">
+            Source Code
+        <div id="source-code">
+          
+        <strong>JavaScript</strong>:   
+        <code class="source-code"><pre>
+if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+var container;
+var camera, scene, renderer, light, reflectCubeCamera;
+var object1, object2, object3, object4, object5;
+var controls;
+
+init();
+<span class="highlight template4">animate();</span>
+function init() {
+    <span class="highlight template1">container = document.getElementById( 'container' );
+    
+    renderer = <span class="highlight fact1 concept1 concept12">new THREE.WebGLRenderer()</span>;
+    renderer.<span class="highlight fact2">setSize( window.innerWidth, window.innerHeight)</span>;
+    container.appendChild( renderer.domElement );
+    
+    scene = <span class="highlight fact3">new THREE.Scene()</span>;
+    camera = <span class="highlight fact4 concept2">new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 1, 20000 )</span>;</span>
+    camera.<span class="highlight fact5 concept3">position.set( 60, 10, 100 )</span>;
+    
+    light = new THREE.<span class="highlight fact6 concept4">DirectionalLight( 0xffffff, 0.8 )</span>;
+    light.<span class="highlight fact5 concept3">position.set( - 30, 30, 30 )</span>;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( light )</span>;</span>
+    var ambientLight = new THREE.<span class="highlight fact8 concept5">AmbientLight( 0x555555, 0.4 )</span>;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( ambientLight )</span>;</span>
+
+    
+    <span class="highlight template2">var geometry1 = new THREE.<span class="highlight fact9 concept6">IcosahedronGeometry( 20, 0 )</span>;
+    var material1 = new THREE.<span class="highlight fact14 concept11">MeshPhongMaterial( {
+            shininess: 20,
+            specular: 0xffff00,
+            side: THREE.DoubleSide
+        } )</span>;
+    object1 = new THREE.<span class="highlight fact16">Mesh( geometry1, material1 )</span>;
+    object1.<span class="highlight fact5001 concept3">position.x</span> = -40;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( object1 )</span>;</span></span>
+    
+    <span class="highlight template2">var geometry2 = new THREE.<span class="highlight fact10 concept7">TetrahedronGeometry (20)</span>;
+    var material2 = new THREE.<span class="highlight fact14 concept11">MeshPhongMaterial( {
+            color: 0x555555,
+            emissive: 0x007700,
+            side: THREE.DoubleSide
+        } )</span>;
+    object2 = new THREE.<span class="highlight fact16">Mesh( geometry2, material2 )</span>;
+    object2.<span class="highlight fact5001 concept3">position.x</span> = 40;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( object2 )</span>;</span></span>
+    
+    <span class="highlight template2">var geometry3 = new THREE.<span class="highlight fact11 concept8">SphereGeometry(15, 20, 50)</span>;</span>
+    <span class="highlight template3">reflectCubeCamera = new THREE.<span class="highlight fact17">CubeCamera( 0.1, 5000, 512 )</span>;
+    reflectCubeCamera.<span class="highlight fact5001 concept3">position.x</span> = 0;
+    reflectCubeCamera.<span class="highlight fact5003 concept3">position.z</span> = 20;
+    scene.<span class="highlight fact7">add( reflectCubeCamera )</span>;
+    reflectCubeCamera.<span class="highlight fact18">update( renderer, scene )</span>;
+    <span class="highlight template2">var material3 = new THREE.<span class="highlight fact15">MeshBasicMaterial( {
+            color:  0xffffff,
+            envMap: reflectCubeCamera.renderTarget.texture
+        } )</span>;
+    material3.envMap.mapping = THREE.<span class="highlight fact19">CubeReflectionMapping</span>;</span>
+    object3 = new THREE.<span class="highlight fact16">Mesh( geometry3, material3 )</span>;
+    object3.<span class="highlight fact5001 concept3">position.x</span> = 0;
+    object3.<span class="highlight fact5003 concept3">position.z</span> = 20;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( object3 )</span>;</span></span>
+     
+    <span class="highlight template2">var geometry4 = new THREE.<span class="highlight fact12 concept9">TorusGeometry(10)</span>;
+    var material4 = new THREE.<span class="highlight fact15">MeshBasicMaterial( {
+            color: 0x8f0f5f
+        } )</span>;
+    object4 = new THREE.<span class="highlight fact16">Mesh( geometry4, material4 )</span>;
+    object4.<span class="highlight fact5001 concept3">position.x</span> = 10;
+    object4.<span class="highlight fact5003 concept3">position.z</span> = 50;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( object4 )</span>;</span></span>
+    
+    <span class="highlight template2">var geometry5 = new THREE.<span class="highlight fact13 concept10">ConeGeometry(10,10)</span>;
+    var material5 = new THREE.<span class="highlight fact14 concept11">MeshPhongMaterial( {
+            color: 0xf794f0,
+            opacity: .8,
+            transparent: true,
+            side: THREE.DoubleSide
+        } )</span>;
+    object5 = new THREE.<span class="highlight fact16">Mesh( geometry5, material5 )</span>;
+    object5.<span class="highlight fact5001 concept3">position.x</span> = -40;
+    object5.<span class="highlight fact5003 concept3">position.z</span> = 50;
+    <span class="highlight template1">scene.<span class="highlight fact7">add( object5 )</span>;</span></span>
+    
+    controls = new THREE.<span class="highlight fact20">OrbitControls( camera, renderer.domElement )</span>;
+    controls.<span class="highlight fact21">target.set( 0, 10, 0 )</span>;
+    camera.<span class="highlight fact22">lookAt( controls.target )</span>;
+}
+
+<span class="highlight template4">function animate() {
+    requestAnimationFrame( animate );
+    var time = performance.now();
+    object1.<span class="highlight fact5004 concept3 concept3001">rotation.y</span> = time / 1000;
+    object2.<span class="highlight fact5004 concept3 concept3001">rotation.y</span> = time / 1000;
+    object4.<span class="highlight fact5004 concept3 concept3001">rotation.y</span> = time / 1000;
+    object5.<span class="highlight fact5004 concept3 concept3001">rotation.y</span> = time / 1000;
+    reflectCubeCamera.<span class="highlight fact23">update( renderer, scene )</span>;
+    <span class="highlight template1">renderer.<span class="highlight fact24 concept12">render( scene, camera )</span>;</span>
+}</span>
+        </pre></code>
+        
+        </div></div>
+        
+        
+        
+        <div class="col-sm-6 right-col">
+            <div id="annotation-header">
+            <div>Annotations</div>
+            <div>Search: <div class="btn-group">
+                      <input id="searchinput" type="search" class="form-control">
+                      <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                    </div>
+            </div>
+            </div>
+            <div id="annotations">
+                
+                <div class="annotation concept12">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Render</dt>
+                        <dd> 3D rendering is the 3D computer graphics process of automatically converting 3D wire frame models into 2D images on a computer.</dd>
+                        <!-- https://en.wikipedia.org/wiki/3D_rendering -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept1">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>WebGL</dt>
+                        <dd>Web Graphics Library allows for rendering interactive 2D and 3D graphics within any compatible web browser.</dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept2">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Perspective Projection</dt>
+                        <dd>An approximate representation of an image as it is seen by the eye. For example, closer things appear larger, further things appear smaller.</dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept3">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>3D coordinates: x, y, z</dt>
+                        <dd>In 3D space, x is the horizontal axis perpendicular to the initial view (right, left), y is the vertical axis (up, down), and z is the horizontal axis parallel to the initial view (near, far).</dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept3001">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>3D rotation axes: x, y, z</dt>
+                        <dd>In 3D space, rotations can be done along any of the three axes.</dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept4">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Directional Light</dt>
+                        <dd>A light that gets emitted in a specific direction. This light will behave as though it is infinitely far away and the rays produced from it are all parallel. The common use case for this is to simulate daylight; the sun is far enough away that its position can be considered to be infinite, and all light rays coming from it are parallel.</dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept5">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Ambient Light</dt>
+                        <dd>A light that globally illuminates all objects in the scene equally. This light cannot be used to cast shadows as it does not have a direction.</dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept6">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Icosahedron</dt>
+                        <dd> a polyhedron with 20 faces: <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Zeroth_stellation_of_icosahedron.png/50px-Zeroth_stellation_of_icosahedron.png" alt="drawing of icosahedron"/></dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept7">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Tetrahedron</dt>
+                        <dd> also known as a triangular pyramid, is a polyhedron composed of four triangular faces, six straight edges, and four vertex corners: <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Tetrahedron_vertfig.png/50px-Tetrahedron_vertfig.png" alt="drawing of tetrahedron"/></dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept8">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Sphere</dt>
+                        <dd> a perfectly round geometrical object in three-dimensional space that is the surface of a completely round ball: <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Sphere_and_Ball.png/50px-Sphere_and_Ball.png" alt="drawing of sphere with radius labeled"/></dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept9">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Torus</dt>
+                        <dd> a surface of revolution generated by revolving a circle in three-dimensional space about an axis coplanar with the circle (a donut shape): <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Torus.svg/50px-Torus.svg.png" alt="drawing of torus"/></dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept10">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Cone</dt>
+                        <dd>  a three-dimensional geometric shape that tapers smoothly from a flat base (frequently, though not necessarily, circular) to a point called the apex or vertex: <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Blender-mesh-cone.png/50px-Blender-mesh-cone.png" alt="drawing of cone"/></dd>
+                    </dl>
+                </div>
+                
+                <div class="annotation concept11">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Specular highlight</dt>
+                        <dd>  A specular highlight is the bright spot of light that appears on shiny objects when illuminated:<br> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Surface_of_revolution_illustration.png/50px-Surface_of_revolution_illustration.png" alt="green vase shape with specular highlights"/></dd>
+                        <!-- https://en.wikipedia.org/wiki/Specular_highlight  https://commons.wikimedia.org/wiki/File:Surface_of_revolution_illustration.png-->
+                    </dl>
+                </div>
+                
+                
+                <div class="annotation template1">
+                    <h5 class="template">Template</h5>
+                    Set up a scene and render it. <br>
+                    JS:
+                    <code><pre>
+<em class="note">// Create renderer</em>
+var renderer = new THREE.WebGLRenderer();
+<em>DOMContainer</em>.appendChild( renderer.domElement );
+<em class="note">// Create scene and camera</em>
+var scene = new THREE.Scene();
+var camera = new <em>Camera...</em>
+
+<em class="note">// Add lights</em>
+scene.add(<em>light</em>);
+
+<em class="note">// Add objects</em>
+scene.add(<em>object</em>);
+
+<em class="note">// render scene</em>
+renderer.render( scene, camera );
+                    </pre></code>
+                </div>
+                
+                <div class="annotation template2">
+                    <h5 class="template">Template</h5>
+                    Create an object and add it to a scene. <br>
+                    JS:
+                    <code><pre>
+<em class="note">// Create geometry and material</em>
+var geometry = new THREE.<em>geometryType</em>
+var material = new THREE.<em>materialType</em>
+
+<em class="note">// Combine geometry and material in a mesh</em>
+var object = new THREE.Mesh( geometry, material );
+
+<em class="note">// Set position of object</em>
+object.position.<em>...</em>
+
+<em class="note">// Add object to scene</em>
+scene.add( object );
+                    </pre></code>
+                </div> 
+                
+                <div class="annotation template3">
+                    <h5 class="template">Template</h5>
+                    Create a reflective material. <br>
+                    JS:
+                    <code><pre>
+<em class="note">// Create a camera to capture reflection view.</em>
+reflectCubeCamera = new THREE.CubeCamera(<em>...</em>);
+
+<em class="note">// add camera to scene and update the camera</em>
+scene.add( reflectCubeCamera );
+reflectCubeCamera.update( renderer, scene );
+
+<em class="note">// Create material with reflection view as the environment Map</em>
+var material3 = new THREE.MeshBasicMaterial( {
+        envMap: reflectCubeCamera.renderTarget.texture
+        <em>...</em>
+    } );
+material3.envMap.mapping = THREE.CubeReflectionMapping;
+                    </pre></code>
+                </div> 
+                
+                <div class="annotation template4">
+                    <h5 class="template">Template</h5>
+                    Animate a scene. <br>
+                    JS:
+                    <code><pre>
+<em class="note">// Call animate function</em>
+animate();
+
+function animate() {
+    <em class="note">// Tell browser to call animate again when the next animation frame is ready</em>
+    requestAnimationFrame( animate );
+    <em class="note">// Get current time</em>
+    var time = performance.now();
+    
+    <em class="note">// update scene</em>
+    
+    <em class="note">// render scene</em>
+    renderer.render( scene, camera );
+}
+                    </pre></code>
+                </div> 
+                
+                <div class="annotation fact1">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.WebGLRenderer()</code>
+                    <p>Create a renderer that will use WebGL.</p>
+                </div>
+                
+                <div class="annotation fact2">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>renderer</em>.setSize (<em>width</em>, <em>height</em>, <em>updateStyle</em>)</code>
+                    <p>Resizes the output canvas to (width, height) with device pixel ratio taken into account. Setting updateStyle to false prevents any style changes to the output canvas.</p>
+                </div>
+                
+                <div class="annotation fact3">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.Scene()</code>
+                     <p>Create a new scene object. Scenes allow you to set up what and where is to be rendered by three.js. This is where you place objects, lights and cameras.</p>
+                </div>
+                
+                <div class="annotation fact4">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.PerspectiveCamera(<em>fov</em>, <em>aspect</em>, <em>near</em>, <em>far</em> )</code>
+                     <p>Create a camera that uses perspective projection. Takes the following parameters:</p>
+                        <ul>
+                            <li>fov - Camera field of view</li>
+                            <li>aspect - Camera aspect ratio</li>
+                            <li>near - Camera near plane</li>
+                            <li>far - Camera far plane</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact5">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.position.set(<em>x</em>, <em>y</em>, <em>z</em>)</code>
+                     <p>Places the object at the given x, y, and z coordinates :</p>
+                    </dl>
+                </div>
+                
+                <div class="annotation fact5001">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.position.x</code>
+                     <p>Retrieve or set the x coordinate of an object :</p>
+                    </dl>
+                </div>
+                
+                <div class="annotation fact5002">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.position.y</code>
+                     <p>Retrieve or set the y coordinate of an object :</p>
+                    </dl>
+                </div>
+                
+                <div class="annotation fact5003">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.position.z</code>
+                     <p>Retrieve or set the z coordinate of an object :</p>
+                    </dl>
+                </div>
+                
+                <div class="annotation fact5004">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.rotation.y</code>
+                     <p>Retrieve or set the y rotation of an object :</p>
+                    </dl>
+                </div>
+                
+                <div class="annotation fact6">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.DirectionalLight(<em>color</em>, <em>intensity</em>)</code>
+                     <p>Create a Directional Light. Parameters:</p>
+                        <ul>
+                            <li>color - (optional) hexadecimal color of the light. Default is 0xffffff (white).</li>
+                            <li>intensity - (optional) numeric value of the light's strength/intensity. Default is 1.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact7">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.add(<em>object</em>)</code>
+                     <p>Adds object as child of this object. An arbitrary number of objects may be added.</p>
+                </div>
+                
+                <div class="annotation fact8">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.AmbientLight(<em>color</em>, <em>intensity</em>)</code>
+                     <p>Create an Ambient Light. Parameters:</p>
+                        <ul>
+                            <li>color - Numeric value of the RGB component of the color.</li>
+                            <li>intensity - Numeric value of the light's strength/intensity.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact9">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.IcosahedronGeometry(<em>radius</em>, <em>detail</em>)</code>
+                     <p>Create an Icosahedron. Parameters:</p>
+                        <ul>
+                            <li>radius - Default is 1. </li>
+                            <li>intensity - Default is 0. Setting this to a value greater than 0 adds more vertices making it no longer an icosahedron. When detail is greater than 1, it's effectively a sphere.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact10">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.TetrahedronGeometry(<em>radius</em>, <em>detail</em>)</code>
+                     <p>Create an Tetrahedron. Parameters:</p>
+                        <ul>
+                            <li>radius - Default is 1. </li>
+                            <li>intensity - Default is 0. Setting this to a value greater than 0 adds more vertices making it no longer an icosahedron.</li>
+                        </ul>
+                </div>
+                
+                
+                <div class="annotation fact11">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.SphereGeometry(<em>radius</em>, <em>widthSegments</em>, <em>widthSegments</em>, <em>heightSegments</em>, <em>phiStart</em>, <em>phiLength</em>, <em>thetaStart</em>, <em>thetaLength</em>)</code>
+                     <p>Create an Sphere. Parameters:</p>
+                        <ul>
+                            <li>radius - sphere radius. Default is 1. </li>
+                            <li>widthSegments - number of horizontal segments. Minimum value is 3, and the default is 8.</li>
+                            <li>heightSegments - number of vertical segments. Minimum value is 2, and the default is 6.</li>
+                            <li>phiStart - specify horizontal starting angle. Default is 0.</li>
+                            <li>phiLength - specify horizontal sweep angle size. Default is Math.PI * 2.</li>
+                            <li>thetaStart - specify vertical starting angle. Default is 0.</li>
+                            <li>thetaLength - specify vertical sweep angle size. Default is Math.PI.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact12">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.TorusGeometry(<em>radius</em>, <em>tube</em>, <em>radialSegments</em>, <em>tubularSegments</em>, <em>arc</em>)</code>
+                     <p>Create an Torus. Parameters:</p>
+                        <ul>
+                            <li>radius - Radius of the torus, from the center of the torus to the center of the tube. Default is 1. </li>
+                            <li>tube - Radius of the tube. Default is 0.4. </li>
+                            <li>radialSegments - Default is 8 </li>
+                            <li>tubularSegments - Default is 6.</li>
+                            <li>arc - Central angle. Default is Math.PI * 2.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact13">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.ConeGeometry(<em>radius</em>, <em>height</em>, <em>radialSegments</em>, <em>heightSegments</em>, <em>openEnded</em>, <em>thetaStart</em>, <em>thetaLength</em>)</code>
+                     <p>Create an Sphere. Parameters:</p>
+                        <ul>
+                            <li>radius - Radius of the cone at the base. Default is 20. </li>
+                            <li>height - Height of the cone. Default is 100.</li>
+                            <li>radialSegments - Number of segmented faces around the circumference of the cone. Default is 8</li>
+                            <li>heightSegments - Number of rows of faces along the height of the cone. Default is 1.</li>
+                            <li>openEnded - A Boolean indicating whether the base of the cone is open or capped. Default is false, meaning capped.</li>
+                            <li>thetaStart - Start angle for first segment, default = 0 (three o'clock position).</li>
+                            <li>thetaLength - The central angle, often called theta, of the circular sector. The default is 2*Pi, which makes for a complete cone.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact14">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.MeshPhongMaterial(<em>parameters</em>)</code>
+                     <p>Create a material for shiny surfaces with specular highlights. Parameters object includes the following options:</p>
+                        <ul>
+                            <li>color - Color of the material, by default set to white (0xffffff). </li>
+                            <li>envMap - The environment map. Default is null.</li>
+                            <li>shininess - How shiny the .specular highlight is; a higher value gives a sharper highlight. Default is 30.</li>
+                            <li>specular - Specular color of the material. Default is a Color set to 0x111111 (very dark grey). This defines how shiny the material is and the color of its shine.</li>
+                            <li>emissive - Emissive (light) color of the material, essentially a solid color unaffected by other lighting. Default is black.</li>
+                            <li>transparent - Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects.  When set to true, the extent to which the material is transparent is controlled by setting it's <code>opacity</code>. Default is false.</li>
+                            <li>opacity - Float in the range of 0.0 - 1.0 indicating how transparent the material is. A value of 0.0 indicates fully transparent, 1.0 is fully opaque. If the material's <code>transparent</code> is not set to true, the material will remain fully opaque and this value will only affect its color. Default is 1.0.</li>
+                            <li>side - TheDefines which side of faces will be rendered - front, back or both. Default is THREE.FrontSide. Other options are THREE.BackSide and THREE.DoubleSide.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact15">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.MeshBasicMaterial(<em>parameters</em>)</code>
+                     <p>A material for drawing geometries in a simple shaded (flat or wireframe) way. This material is not affected by lights. Parameters object includes the following options:</p>
+                        <ul>
+                            <li>color - Color of the material, by default set to white (0xffffff). </li>
+                            <li>envMap - The environment map. Default is null.</li>
+                            <li>transparent - Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects.  When set to true, the extent to which the material is transparent is controlled by setting it's <code>opacity</code>. Default is false.</li>
+                            <li>opacity - Float in the range of 0.0 - 1.0 indicating how transparent the material is. A value of 0.0 indicates fully transparent, 1.0 is fully opaque. If the material's <code>transparent</code> is not set to true, the material will remain fully opaque and this value will only affect its color. Default is 1.0.</li>
+                            <li>side - TheDefines which side of faces will be rendered - front, back or both. Default is THREE.FrontSide. Other options are THREE.BackSide and THREE.DoubleSide.</li>
+                        </ul>
+                </div>
+                
+                                
+                <div class="annotation fact16">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.Mesh(<em>geometry</em>, <em>material</em>)</code>
+                     <p>Class representing triangular polygon mesh based objects. Parameters:</p>
+                        <ul>
+                            <li>geometry - (optional) an instance of Geometry or BufferGeometry. Default is a new BufferGeometry. </li>
+                            <li>material - (optional) a single or an array of Material. Default is a new MeshBasicMaterial</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact17">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.Mesh(<em>near</em>, <em>far</em>, <em>cubeResolution</em>)</code>
+                     <p>Creates 6 cameras that render to a WebGLRenderTargetCube. Parameters:</p>
+                        <ul>
+                            <li>near -- The near clipping distance.  </li>
+                            <li>far -- The far clipping distance </li>
+                            <li>cubeResolution -- Sets the length of the cube's edges.</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact18">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>cubeCamera</em>.update(<em>renderer</em>, <em>scene</em>)</code>
+                     <p>Call this to update the renderTarget. Parameters:</p>
+                        <ul>
+                            <li>renderer -- The current WebGL renderer </li>
+                            <li>scene -- The current scene</li>
+                        </ul>
+                </div>
+                
+                <div class="annotation fact19">
+                    <h5 class="fact">Fact</h5>
+                    <code>THREE.CubeReflectionMapping, THREE.CubeRefractionMapping</code>
+                     <p>CubeReflectionMapping and CubeRefractionMapping are for use with a CubeTexture, which is made up of six textures, one for each face of the cube.</p>
+                </div>
+                
+                <div class="annotation fact20">
+                    <h5 class="fact">Fact</h5>
+                    <code>new THREE.OrbitControls(<em>camera</em>, <em>domElement</em>)</code>
+                     <p>Orbit controls allow the camera to orbit around a target. Parameters:</p>
+                     <ul>
+                        <li>camera - (required) The camera to be controlled. </li>
+                        <li>domElement - (optional) The HTML element used for event listeners. By default this is the whole document, however if you only want to the controls to work over a specific element (e.g. the canvas) you can specify that here.</li>
+                    </ul>
+                </div>
+                
+                <div class="annotation fact21">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>OrbitControls</em>.target</code>
+                     <p>The focus point of the controls, the camera orbits around this. It can be updated manually at any point to change the focus of the controls.</p>
+                </div>
+                
+                <div class="annotation fact22">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>object</em>.lookAt(<em>vector</em> or <em>x</em>, <em>y</em>, <em>z</em>)</code>
+                     <p>Rotates the object to face a point in world space. Paramters:</p>
+                      <ul>
+                        <li>vector - A vector representing a position in world space.</li>
+                        <li>Optionally, the x, y and z components of the world space position.</li>
+                    </ul>
+                </div>
+                
+                <div class="annotation fact23">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>CubeCamera</em>.update(<em>renderer</em>, <em>scene</em>)</code>
+                     <p>Call this to update the renderTarget. Paramters:</p>
+                      <ul>
+                        <li>renderer -- The current WebGL renderer </li>
+                        <li>scene -- The current scene</li>
+                    </ul>
+                </div>
+                
+                <div class="annotation fact24">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>WebGLRenderer</em>.render(<em>scene</em>, <em>camera</em>, <em>renderTarget</em>, <em>forceClear</em>)</code>
+                    <p>Render a <code>scene</code> using a <code>camera</code>.
+                        The render is done to the <code>renderTarget</code> (if specified) or to the canvas as usual.</p>
+                    <p>If <code>forceClear</code> is true, the depth, stencil and color buffers will be cleared before rendering even if the renderer's autoClear property is false.</p>
+                </div>
+                
+            </div>
+        </div>
+        </div>
+	<footer>
+		Code example derived from the <a href="https://threejs.org/examples/" target="_blank">official ThreeJS examples</a>. Some annotations are based on content from the <a href="https://threejs.org/docs/index.html" target="_blank">ThreeJS Documentation</a>, <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>, or <a href="https://www.wiktionary.org/" target="_blank">Wiktionary</a>.
+		</footer>
+    </body>
+</html>

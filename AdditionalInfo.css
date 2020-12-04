@@ -1,0 +1,109 @@
+pre {
+    white-space: pre-wrap; 
+}
+
+span {
+  display: inline;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.highlight {
+    background-color: rgb(255, 255, 220);
+}
+
+.highlight .highlight {
+    background-color: rgb(255, 240, 175);
+}
+
+.highlight .highlight .highlight{
+    background-color: rgb(255, 215, 160);
+}
+
+.highlight .highlight .highlight .highlight{
+    background-color: rgb(255, 190, 145);
+}
+
+.highlight .highlight .highlight .highlight .highlight{
+    background-color: rgb(255, 170, 130);
+}
+
+.highlight .highlight .highlight .highlight .highlight .highlight{
+    background-color: rgb(255, 150, 105);
+}
+
+
+#source-code {
+    height: 95%;
+    overflow-y: scroll;
+}
+
+#annotations {
+    height: 95%;
+    overflow-y: scroll;
+}
+
+.annotation {
+    background-color: rgb(239, 239, 239);
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+
+
+
+.annotation pre {
+    margin-left: 10px;
+}
+
+.annotation p{
+    margin-bottom: .5rem;
+}
+
+.annotation h5 {
+    text-align: center;
+    margin-bottom: 0px;
+    font-size: 95%;
+    padding-right:5%;
+}
+
+.annotation h5.concept {
+    background-color:lightblue;
+}
+
+.annotation h5.template {
+    background-color:lightgreen;
+}
+
+.annotation h5.fact {
+    background-color:lightpink;
+}
+
+.annotation .elipses {
+    color: gray;
+}
+
+.annotation .note {
+    color: green;
+}
+
+.selected{
+    border: solid red;
+}
+
+#annotation-header {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+img {
+    padding:3px;
+}
+
+.taskHeader {
+    padding-left: 10px;
+}
+
+h1 {
+    display: inline;
+}

@@ -1,0 +1,569 @@
+<html>
+    <head>
+        <title>Example Code (Natural)</title>
+         <link rel="stylesheet" href="AdditionalInfo.css" type="text/css"/>
+                 <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="jquery.csv.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+        
+        <script>
+            currentTaskName = "natural";
+            currentTaskNum = 3;
+        </script>    
+        
+        <script src="AdditionalInfo.js"></script>
+    </head>
+    <body class="container">
+        <header><h1>Annotated Code</h1></header>
+        <div class="row">
+        <div class="col-sm-6">
+            Source Code
+        <div id="source-code">
+          
+        <strong>HTML</strong>:   
+        <code class="source-code"><pre>
+function print(string){
+    document.getElementById("output_div").innerHTML += string;
+    document.getElementById("output_div").innerHTML += "&lt;br&gt;";
+}
+
+
+<span class="highlight concept0 concept1 template1">var tokenizer = new natural.<span class="highlight fact1">WordTokenizer()</span>;
+print(tokenizer.<span class="highlight fact3">tokenize("your dog has fleas.")</span>);
+// output: [ 'your', 'dog', 'has', 'fleas' ]</span><!-- 
+
+tokenizer = new natural.TreebankWordTokenizer();
+print(tokenizer.tokenize("my dog hasn't any fleas."));
+// [ 'my', 'dog', 'has', 'n\'t', 'any', 'fleas', '.' ] 
+
+tokenizer = new natural.RegexpTokenizer({pattern: /\-/});
+print(tokenizer.tokenize("flea-dog"));
+// [ 'flea', 'dog' ]
+
+tokenizer = new natural.WordPunctTokenizer();
+print(tokenizer.tokenize("my dog hasn't any fleas."));
+// [ 'my',  'dog',  'hasn',  '\'',  't',  'any',  'fleas',  '.' ]
+
+
+<span class="highlight concept4"><span class="highlight concept2">print(natural.<span class="highlight fact3">JaroWinklerDistance("dixon","dicksonx")</span>);
+// output: 0.7466666666666666
+print(natural.<span class="highlight fact3">JaroWinklerDistance('not', 'same')</span>);
+// output: 0</span>
+
+<span class="highlight concept3">print(natural.<span class="highlight fact4">LevenshteinDistance("ones","onez")</span>);
+// output: 1
+print(natural.<span class="highlight fact4">LevenshteinDistance('one', 'one')</span>);
+// output: 0</span></span>-->
+
+
+<span class="highlight concept5">print(natural.LancasterStemmer.<span class="highlight fact5">stem("words")</span>); 
+// output: 'word'
+
+<span class="highlight template2">natural.LancasterStemmer.<span class="highlight fact6">attach()</span>;
+print("i am waking up to the sounds of chainsaws".<span class="highlight fact7 concept0 concept1">tokenizeAndStem()</span>);
+// output: ["wak", "sound", "chainsaw"]
+print("chainsaws".<span class="highlight fact5">stem()</span>);
+// output: chainsaw</span></span>
+
+
+<span class="highlight concept6">var NGrams = natural.NGrams;
+
+<span class="highlight concept7">print(NGrams.<span class="highlight fact8">bigrams('some words here')</span>);
+// output: [ [ 'some', 'words' ], [ 'words', 'here' ] ]
+print(NGrams.<span class="highlight fact8">bigrams(['some',  'words',  'here'])</span>);
+// output: [ [ 'some', 'words' ], [ 'words', 'here' ] ]</span>
+
+<span class="highlight concept8">print(NGrams.<span class="highlight fact9">trigrams('some other words here')</span>);
+// output: [ [ 'some', 'other', 'words' ], [ 'other', 'words', 'here' ] ]
+print(NGrams.<span class="highlight fact9">trigrams(['some',  'other', 'words',  'here'])</span>);
+// output: [ [ 'some', 'other', 'words' ], [ 'other', 'words', 'here' ] ]</span>
+
+print(NGrams.<span class="highlight fact10">ngrams('some other words here for you', 4)</span>);
+// output: [ [ 'some', 'other', 'words', 'here' ], [ 'other', 'words', 'here', 'for' ], [ 'words', 'here', 'for', 'you' ] ]
+print(NGrams.<span class="highlight fact10">ngrams(['some', 'other', 'words', 
+   'here', 'for', 'you'], 4)</span>);
+// output: [ [ 'some', 'other', 'words', 'here' ], [ 'other', 'words', 'here', 'for' ], [ 'words', 'here', 'for', 'you' ] ]</span>
+
+
+<span class="highlight concept9"><span class="highlight template3"><span class="highlight template4 template40001">var TfIdf = natural.TfIdf;
+var tfidf = <span class="highlight fact11">new TfIdf();</span>
+
+<span class="highlight fact12">tfidf.addDocument('this document is about node.');
+tfidf.addDocument('this document is about ruby.');
+tfidf.addDocument('this document is about ruby and node.');
+tfidf.addDocument('this document is about node. it has node examples');</span></span>
+
+print('node --------------------------------');
+tfidf.<span class="highlight fact13">tfidfs('node', function(i, measure) {
+    print('document #' + i + ' is ' + measure);
+});</span>
+// output:  node --------------------------------
+// output: document #0 is 1
+// output: document #1 is 0
+// output: document #2 is 1
+// output: document #3 is 2
+
+print('ruby --------------------------------');
+tfidf.<span class="highlight fact13">tfidfs('ruby', function(i, measure) {
+    print('document #' + i + ' is ' + measure);
+});</span>
+// output: ruby --------------------------------
+// output: document #0 is 0
+// output: document #1 is 1.2876820724517808
+// output: document #2 is 1.2876820724517808
+// output: document #3 is 0</span>
+
+<span class="highlight template4">print(tfidf.<span class="highlight fact14">tfidf('node', 0)</span>);
+// output: 1
+print(tfidf.<span class="highlight fact14">tfidf('node', 1)</span>);
+// output: 0</span>
+
+<span class="highlight template40001">tfidf.<span class="highlight fact14001">listTerms(0)</span>.forEach(function(item) {
+    print(item.term + ': ' + item.tfidf);
+});
+// output: node: 1
+// output: document: 0.7768564486857903</span></span>
+<!--
+
+var Trie = natural.Trie;
+var trie = new Trie();
+
+trie.addString("test");
+trie.addStrings(["string1", "string2", "string3"]);
+print(trie.contains("test"));
+// true
+print(trie.contains("asdf")); 
+// false
+print(trie.findPrefix("tester"));     
+// ['test', 'er']
+print(trie.findPrefix("string4"));    
+// [null, '4']
+print(trie.findPrefix("string3"));    
+// ['string3', '']
+
+
+var corpus = ['something', 'soothing'];
+var spellcheck = new natural.Spellcheck(corpus);
+print(spellcheck.isCorrect('cat')); 
+// false
+print(spellcheck.getCorrections('soemthing', 1));
+// ['something']
+print(spellcheck.getCorrections('soemthing', 2));
+// ['something', 'soothing']-->
+
+
+<span class="highlight concept10 concept11 template5 fact19">var lexicon = new natural.<span class="highlight concept12 fact15">Lexicon("lib/lexicon_from_posjs.json", 'N')</span>;
+var rules = new natural.<span class="highlight concept13 fact16">RuleSet("lib/tr_from_posjs.txt")</span>;
+var tagger = new natural.<span class="highlight fact17">BrillPOSTagger(lexicon, rules)</span>;
+
+var sentence = ["I", "see", "the", "man", "with", "the", "telescope"];
+print(JSON.stringify(tagger.<span class="highlight fact18">tag(sentence)</span>));
+// output: [["I","NN"],["see","VB"],["the","DT"],["man","NN"],["with","IN"],["the","DT"],["telescope","NN"]]
+</span>
+        </pre></code>
+        
+        </div></div>
+        
+        
+        
+        <div class="col-sm-6 right-col">
+            <div id="annotation-header">
+            <div>Annotations</div>
+            <div>Search: <div class="btn-group">
+                      <input id="searchinput" type="search" class="form-control">
+                      <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                    </div>
+            </div>
+            </div>
+            <div id="annotations">
+                <div class="annotation concept1">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Tokenizer</dt>
+                        <dd> A system that parses an input stream into its component tokens.</dd>
+                        <!-- https://en.wiktionary.org/wiki/tokenizer -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept0">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Token</dt>
+                        <dd>An atomic piece of data, such as a word, for which a meaning may be inferred during parsing.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Vector_graphics -->
+                    </dl>
+                </div>
+                
+                <!--<div class="annotation concept4">-->
+                <!--    <h5 class="concept">Concept</h5>-->
+                <!--    <dl>-->
+                <!--        <dt>Edit-distance</dt>-->
+                <!--        <dd> edit distance is a way of quantifying how dissimilar two strings (e.g., words) are to one another by counting the minimum number of operations required to transform one string into the other. </dd>-->
+                        <!-- https://en.wikipedia.org/wiki/Edit_distance -->
+                <!--    </dl>-->
+                <!--</div>-->
+                
+                <!--<div class="annotation concept2">-->
+                <!--    <h5 class="concept">Concept</h5>-->
+                <!--    <dl>-->
+                <!--        <dt>Jaro-Winkler distance</dt>-->
+                <!--        <dd> The Jaro-Winkler distance is a string metric for measuring the edit distance between two sequences. The lower the Jaro-Winkler distance for two strings is, the more similar the strings are. The score is normalized such that 0 equates to no similarity and 1 is an exact match. </dd>-->
+                        <!-- https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance -->
+                <!--    </dl>-->
+                <!--</div>-->
+                
+                <!--<div class="annotation concept3">-->
+                <!--    <h5 class="concept">Concept</h5>-->
+                <!--    <dl>-->
+                <!--        <dt>Levenshtein distance</dt>-->
+                <!--        <dd> the Levenshtein distance is a string metric for measuring the difference between two sequences. Informally, the Levenshtein distance between two words is the minimum number of single-character edits (insertions, deletions or substitutions) required to change one word into the other.</dd>-->
+                        <!-- https://en.wikipedia.org/wiki/Levenshtein_distance -->
+                <!--    </dl>-->
+                <!--</div>-->
+                
+                <div class="annotation concept5">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Stemming</dt>
+                        <dd>stemming is the process of reducing inflected (or sometimes derived) words to their word stem, base or root form. Tt is usually sufficient that related words map to the same stem, even if this stem is not in itself a valid root. </dd>
+                        <!-- https://en.wikipedia.org/wiki/Stemming -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept6">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>n-gram</dt>
+                        <dd> A contiguous sequence of n items from a given sequence of text or speech. For example, the sentance "Hello! How are you doing?" has two 4-grams:</dd>
+                        <ul>
+                            <li>"hello how are you"</li>
+                            <li>"how are you doing"</li>
+                        </ul>
+                        
+                        <!-- https://en.wiktionary.org/wiki/n-gram -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept7">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Bigram</dt>
+                        <dd>A pair, often of words or tags, used in natural language processing for doing statistical analysis of texts. For example, the sentance "How are you doing?" has three bigrams:</dd>
+                        <ul>
+                            <li>"how are"</li>
+                            <li>"are you"</li>
+                            <li>"you doing</li>
+                        </ul></dd>
+                        <!-- https://en.wiktionary.org/wiki/bigram#English -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept8">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Trigram</dt>
+                        <dd>A special case of the n-gram where n is 3. </dd>
+                        <!-- https://en.wiktionary.org/wiki/trigram#English -->
+                    </dl>
+                </div>
+
+                <div class="annotation concept9">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>tf-idf</dt>
+                        <dd>Short for <strong>term frequency-inverse document frequency</strong>. A numerical statistic that is intended to reflect how important a word is to a document relative to a corpus of documents (a <strong>document</strong> is any collection of terms and a <strong>corpus</strong> is any collection of documents). The <strong>term frequency</strong> is the raw count of a term in the target document. The <strong>inverse document frequency</strong> is the logarithmically scaled inverse fraction of all documents in the corpus that contain the word. </dd>
+                        <!-- https://en.wikipedia.org/wiki/Tf%E2%80%93idf https://en.wiktionary.org/wiki/TF-IDF -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept11">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>POS</dt>
+                        <dd>Short for "part of speech." A POS is a category of words, such as nouns, verbs, and adjectives.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Part_of_speech -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept10">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>POS tagger</dt>
+                        <dd>A Part-of-speech (POS) tagger is a program that marks up a word in a text (corpus) as corresponding to a particular part of speech, based on both its definition and its context.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Part-of-speech_tagging -->
+                    </dl>
+                </div>
+                                
+                <div class="annotation concept12">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Lexicon</dt>
+                        <dd>A lexicon is essentially a catalogue of a language's words (its wordstock).</dd>
+                        <!-- https://en.wikipedia.org/wiki/Lexicon -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept13">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Grammar</dt>
+                        <dd>A system of rules which allow for the combination words into meaningful sentences.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Lexicon -->
+                    </dl>
+                </div>
+                
+        
+                
+                <div class="annotation template1">
+                    <h5 class="template">Template</h5>
+                    Split a string into tokens <br>
+                    JS:
+                    <code><pre>
+var tokenizer = new natural.WordTokenizer();
+tokenizer.tokenize("an example string.");
+                    </pre></code>
+                </div>
+                
+                <div class="annotation template2">
+                    <h5 class="template">Template</h5>
+                    Attach stemmer to strings so it can be called directly on strings. <br>
+                    JS:
+                    <code><pre>
+<em class="note">// attach stemmer</em>
+natural.LancasterStemmer.attach();
+
+<em class="note">// then call</em>
+"example string".tokenizeAndStem();
+<em class="note">// or</em>
+"string".stem())
+                    </pre></code>
+                </div>
+                
+                
+                <div class="annotation template3">
+                    <h5 class="template">Template</h5>
+                    Retrieve the tfIdf value of a given word from all documents in a corpus.<br>
+                    JS:
+                    <code><pre>
+<em class="note">// Create TdIdf Object</em>
+var tfidf = new natrual.TfIdf();
+
+<em class="note">// Add documents to the corpus</em>
+tfidf.addDocument(<em>document0</em>);
+tfidf.addDocument(<em>document1</em>);
+<em>...</em>
+
+<em class="note">// Retrieve tf-idf values for the given word for each document</em>
+tfidf.tfidfs(<em>word</em>, function(i, value) {
+    <em class="note">// use i and value</em>
+});
+                    </pre></code>
+                </div>
+                
+                <div class="annotation template4">
+                    <h5 class="template">Template</h5>
+                    Retrieve the tfIdf value of a given word for one documents in a corpus.<br>
+                    JS:
+                    <code><pre>
+<em class="note">// Create TdIdf Object</em>
+var tfidf = new natrual.TfIdf();
+
+<em class="note">// Add documents to the corpus</em>
+tfidf.addDocument(<em>document0</em>);
+tfidf.addDocument(<em>document1</em>);
+<em>...</em>
+
+<em class="note">// Retrieve tf-idf values for the given word from a specific document</em>
+tfidf.tfidf(<em>word</em>, <em>documentIndex</em>)
+                    </pre></code>
+                </div>
+                
+                <div class="annotation template40001">
+                    <h5 class="template">Template</h5>
+                    Retrieve the terms of a document in a corpus in sorted tfIdf order.<br>
+                    JS:
+                    <code><pre>
+<em class="note">// Create TdIdf Object</em>
+var tfidf = new natrual.TfIdf();
+
+<em class="note">// Add documents to the corpus</em>
+tfidf.addDocument(<em>document0</em>);
+tfidf.addDocument(<em>document1</em>);
+<em>...</em>
+
+<em class="note">// Retrieve terms from a document in sorted tf-idf order</em>
+tfidf.listTerms(<em>documentId</em>)
+                    </pre></code>
+                </div>
+                
+                
+<div class="annotation template5">
+                    <h5 class="template">Template</h5>
+                    Set up POS tagger to tag a sentance.<br>
+                    JS:
+                    <code><pre>
+<em class="note">// Set up POS tagger</em>
+var lexicon = new natural.Lexicon(<em>filename</em>, <em>defaultTag</em>);
+var rules = new natural.RuleSet(<em>filename</em>);
+var tagger = new natural.BrillPOSTagger(lexicon, rules);
+
+<em class="note">// tag a sentance</em>
+tagger.tag(<em>arrayOfWords</em>);
+                    </pre></code>
+                </div>
+                
+                
+                <div class="annotation fact15">
+                    <h5 class="fact">Fact</h5>
+                    <code>new natural.Lexicon(<em>lexiconFilename</em>, <em>defaultCategory</em>)</code>
+                    <p>Load a lexicon consisting of a set of words and the POS tag of each word. Any word whose POS tag is not known will be assigned the <code>defaultCategory</code>.</p>
+                </div>
+                
+                <div class="annotation fact16">
+                    <h5 class="fact">Fact</h5>
+                    <code>new natural.RuleSet(<em>rulesFilename</em>)</code>
+                    <p>Loads a ruleset for deducing the POS tag for words based on their context.</p>
+                </div>
+                
+                <div class="annotation fact17">
+                    <h5 class="fact">Fact</h5>
+                    <code>new natural.BrillPOSTagger(<em>lexicon</em>, <em>rules</em>)</code>
+                    <p>Creates a Brill POS tagger that uses the POS tags from the <code>lexicon</code> and the <code>ruleset</code> from the rules to deduce POS tags for words.</p>
+                </div>
+                
+                <div class="annotation fact18">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>BrillPOSTagger</em>.tag(<em>sentance</em>)</code>
+                    <p>Uses a Brill POS tagger to find POS tags of all words in a <code>sentance</code> (an array of strings). These are returned as an array of length 2 arrays. The length 2 arrays contain the word at index 0 and the POS tag at index 1. </p>
+                </div>
+                
+                <div class="annotation fact19">
+                    <h5 class="fact">Fact</h5>
+                    <p>POS tags include the following:</p>
+                    <ul>
+                        <li>CC - Coordinating conjunction</li>
+                        <li>CD - Cardinal number</li>
+                        <li>DT - Determiner</li>
+                        <li>IN - Preposition or subordinating conjunction</li>
+                        <li>NN - Noun, singular or mass</li>
+                        <li>NN - Noun, plural</li>
+                        <li>PRP - Personal pronoun</li>
+                        <li>PRP$ - Possessive pronoun</li>
+                    </ul>
+                    <!--https://cs.nyu.edu/grishman/jet/guide/PennPOS.html-->
+                </div>
+                
+                <div class="annotation fact11">
+                    <h5 class="fact">Fact</h5>
+                    <code>new natrual.TfIdf()</code>
+                    <p>Create a TfIdf object which will hold a corpus of documents and can compute tf-idf values.</p>
+                </div>
+                
+                <div class="annotation fact12">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>TfIdfObject</em>.addDocument(<em>document</em>);</code>
+                    <p>Add the given document (a string) to the corpus.</p>
+                </div>
+                
+                <div class="annotation fact13">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>TfIdfObject</em>.tfidfs(<em>word</em>, <em>callback</em>);</code>
+                    <p>Find the tf-idf value of the given word in each document and call the <code>callback</code> for each of the documents.</p>
+                    <p>The <code>callback</code> takes two paramters</p>
+                    <ul>
+                        <li>documentIndex - The index of the document being reported on. The first document added is index 0.</li>
+                        <li>tfidfValue - The tf-idf value of the given word for this document.</li>
+                    </ul>
+                </div> 
+              
+                <div class="annotation fact14">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>TfIdfObject</em>.tfidf(<em>word</em>, <em>documentIndex</em>);</code>
+                    <p>Find the tf-idf value of the given <code>word</code> in document <code>documentIndex</code>. The first document added is index 0.</p>
+                </div>
+                
+                
+                <div class="annotation fact14001">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>TfIdfObject</em>.listTerms(<em>documentIndex</em>);</code>
+                    <p>List all terms for document <code>documentIndex</code> sorted by tf-idf value (most important first).</p>
+                    <p>Returns an array of objects, each object has two properties: <code>term</code> and <code>tfidf</code>. E.g., <code>[{term: "a", tfidf: 0.9}, {term: "b", tfidf: 0.7}]</code></p>
+                </div>
+                
+                <div class="annotation fact8">
+                    <h5 class="fact">Fact</h5>
+                    <code>natural.NGrams.bigrams(<em>string</em> or <em>array of strings</em>)</code>
+                    <p>Retrun an array of all bigrams in the string (which will be tokenized for you) or array.</p>
+                </div>
+                
+                <div class="annotation fact9">
+                    <h5 class="fact">Fact</h5>
+                    <code>natural.NGrams.trigrams(<em>string</em> or <em>array of strings</em>)</code>
+                    <p>Retrun an array of all trigrams in the string (which will be tokenized for you) or array.</p>
+                </div>
+                
+                <div class="annotation fact10">
+                    <h5 class="fact">Fact</h5>
+                    <code>natural.NGrams.ngrams(<em>string</em> or <em>array of strings</em>, n)</code>
+                    <p>Retrun an array of all n-grams in the string (which will be tokenized for you) or array.</p>
+                </div>
+                
+                
+                <div class="annotation fact5">
+                    <h5 class="fact">Fact</h5>
+                    <code>natural.LancasterStemmer.stem(<em>word</em>)</code>
+                    <p>Find the stem of the given word (using the Lancaster Stemmer).</p>
+                </div>
+                
+                <div class="annotation fact7">
+                    <h5 class="fact">Fact</h5>
+                    <code>natural.LancasterStemmer.tokenizeAndStem(<em>words</em>)</code>
+                    <p>First tokenize the string then, stem each word, returning an array of the stems.</p>
+                </div>
+                
+                
+                <div class="annotation fact6">
+                    <h5 class="fact">Fact</h5>
+                    <code>natural.LancasterStemmer.attach()</code>
+                    <p>Attach <code>stem()</code> and <code>tokenizeAndStem()</code> to strings so you can call those methods directly on strings.</p>
+                </div>
+                
+                <!--<div class="annotation fact3">-->
+                <!--    <h5 class="fact">Fact</h5>-->
+                <!--    <code>natural.JaroWinklerDistance(<em>string1</em>, <em>string2</em>)</code>-->
+                <!--    <p>Find the Jaro-Winkler distance between string1 and string2.</p>-->
+                <!--</div>-->
+                
+                <!--<div class="annotation fact4">-->
+                <!--    <h5 class="fact">Fact</h5>-->
+                <!--    <code>natural.LevenshteinDistance(<em>string1</em>, <em>string2</em>)</code>-->
+                <!--    <p>Find the Levenshtein distance between string1 and string2.</p>-->
+                <!--</div>-->
+                
+                <div class="annotation fact2">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>tokenizer</em>.tokenize()</code>
+                    <p>Divide text into tokens.</p>
+                </div>
+              
+                <div class="annotation fact1">
+                    <h5 class="fact">Fact</h5>
+                    <code>new natural.WordTokenizer()</code>
+                    <p>Create a tokenizer that divides a text into sequences of alphabetic and non-alphabetic characters.</p>
+                </div> 
+            
+            </div>
+        </div>
+        </div>
+		<footer>
+		Code example based on the <a href="https://github.com/NaturalNode/natural" target="_blank">Natural Documentation</a>. Some annotations are based on content from the <a href="https://github.com/NaturalNode/natural" target="_blank">Natural Documentation</a>S, <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>, or <a href="https://www.wiktionary.org/" target="_blank">Wiktionary</a>.
+		</footer>
+    </body>
+</html>

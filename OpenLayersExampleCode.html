@@ -1,0 +1,695 @@
+<html>
+    <head>
+        <title>Example Code (OpenLayers)</title>
+         <link rel="stylesheet" href="AdditionalInfo.css" type="text/css"/>
+                 <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="jquery.csv.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+        <script>
+            currentTaskName = "openLayers";
+            currentTaskNum = 4;
+        </script>   
+        
+        <script src="AdditionalInfo.js"></script>
+    </head>
+    <body class="container-fluid">
+        <header><h1>Annotated Code</h1></header>
+        <div class="row">
+        <div class="col-sm-6">
+            Source Code
+        <div id="source-code">
+          
+        <strong>JavaScript</strong>:   
+        <code class="source-code"><pre>
+<span class="highlight template2">var map1 = <span class="highlight template1">new ol.<span class="highlight concept1 fact1">Map({
+  target: 'map1',
+  view: new ol.<span class="highlight fact2 concept6006">View({
+    center: [0, 0],
+    zoom: 1,
+  })</span>,
+  <span class="highlight concept3">layers</span>: [
+    new ol.<span class="highlight concept3">layer</span>.<span class="highlight fact3 concept4">Tile({
+      source: new ol.source.<span class="highlight fact4">TileWMS({
+        <span class="highlight concept5">projection</span>: '<span class="highlight concept6">EPSG:4326</span>',
+        url: 'http://demo.boundlessgeo.com/geoserver/wms',
+        params: {
+          'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
+        }
+      })</span>
+    })</span>
+  ]
+})</span></span>;
+
+new ol.<span class="highlight concept7 fact5">Graticule({
+  map: map1
+})</span>;</span>
+
+<span class="highlight template3">var circle = new ol.geom.<span class="highlight fact6">Circle([8e6,8e6], 3e6)</span>;
+var circlePoly = ol.geom.<span class="highlight concept9">Polygon</span>.<span class="highlight fact7">fromCircle(circle, 15)</span>;</span>
+
+<span class="highlight template4">var squarePoly = new ol.geom.<span class="highlight concept8 concept9 fact8">Polygon()</span>;
+squarePoly.<span class="highlight fact10 concept8 concept9">appendLinearRing(new ol.geom.<span class="highlight fact9">LinearRing([[5e6, 5e6], [5e6, -5e6], [-5e6, -5e6], [-5e6, 5e6]])</span>)</span>;
+var squareLinearRing = squarePoly.<span class="highlight fact11 concept8 concept9">getLinearRing(0)</span>;
+squareLinearRing.<span class="highlight fact12 concept8">scale(.5,.25)</span>;
+squarePoly.<span class="highlight fact10 concept8 concept9">appendLinearRing(squareLinearRing)</span>;</span>
+
+
+<span class="highlight template5 concept10">var vectorSource = new ol.source.<span class="highlight fact13">Vector({
+  features: [
+    new ol.<span class="highlight fact14">Feature(circlePoly)</span>,
+    new ol.<span class="highlight fact14">Feature(squarePoly)</span>,
+  ]
+});</span>
+
+var vectorLayer = new ol.layer.<span class="highlight fact15">Vector({
+  source: vectorSource
+})</span>;
+
+map1.<span class="highlight fact16">addLayer(vectorLayer)</span>;
+</span>
+
+
+
+<span class="highlight template6">var countrySource = new ol.source.<span class="highlight concept10 fact13">Vector({
+  url: 'https://openlayers.org/en/v4.6.4/examples/data/geojson/countries-110m.geojson',
+  format: new ol.format.<span class="highlight fact17">GeoJSON()</span>
+})</span>;
+
+var countryLayer =  new ol.layer.<span class="highlight concept10 fact15">Vector({
+  source: countrySource,
+  style: function(feature) {
+      return new ol.style.<span class="highlight fact18">Style({
+        fill: new ol.style.<span class="highlight fact19">Fill({
+          color: 'lightgray'
+        })</span>,
+        stroke: new ol.style.<span class="highlight fact20">Stroke({
+          color: '<span class="highlight concept12">rgba(256,0,0,.7)</span>'
+        })</span>
+      })</span>;
+    }
+})</span>;</span>
+
+<span class="highlight concept5 template8 concept13">
+proj4.defs('ESRI:53009', '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 ' +
+  '+b=6371000 +units=m +no_defs');
+var sphereMollweideProjection = new ol.proj.<span class="highlight fact25 concept14">Projection({
+  code: 'ESRI:53009',
+  extent: [-18000000, -9100000,
+    18000000, 9200000],
+  worldExtent: [-179, -89.99, 179, 89.99]
+})</span>;
+
+<span class="highlight template7 template6">var map2 = new ol.<span class="highlight concept1 fact1">Map({
+  keyboardEventTarget: document,
+  <span class="highlight concept3">layers</span>: [countryLayer],
+  target: 'map2',
+  view: new ol.<span class="highlight fact2 concept6006">View({
+    center: [0, 0],
+    <span class="highlight concept5">projection</span>: sphereMollweideProjection,
+    zoom: 1
+  })</span>
+})</span>;</span></span>
+
+<span class="highlight template7">map2.<span class="highlight fact21">addInteraction(new ol.interaction.<span class="highlight fact22">Modify({
+  source: countrySource
+})</span>)</span>;
+
+map2.<span class="highlight fact21">addInteraction(new ol.interaction.<span class="highlight fact23">Draw({
+  type: '<span class="highlight concept9">Polygon</span>',
+  source: countrySource
+})</span>)</span>;
+
+map2.<span class="highlight fact21">addInteraction(new ol.interaction.<span class="highlight fact24 concept11">Snap({
+  source: countrySource
+})</span>)</span>;</span>
+
+        </pre></code>
+        
+        </div></div>
+        
+        
+        
+        <div class="col-sm-6 right-col">
+            <div id="annotation-header">
+            <div>Annotations</div>
+            <div>Search: <div class="btn-group">
+                      <input id="searchinput" type="search" class="form-control">
+                      <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                    </div>
+            </div>
+            </div>
+            <div id="annotations">
+                <!--<div class="annotation concept0">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>OpenLayers</dt>
+                        <dd>OpenLayers makes it easy to put a dynamic map in any web page.</dd>
+                    </dl>
+                </div>-->
+                
+                <div class="annotation concept14">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>SRS</dt>
+                        <dd>A spatial reference system (SRS) is a coordinate-based system used to locate geographical entities.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Spatial_reference_system -->
+                    </dl>
+                </div>
+                
+                
+                <div class="annotation concept10">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Vector graphics</dt>
+                        <dd>Vector graphics use 2D polygons to represent images in computer graphics. </dd>
+                        <!-- https://en.wikipedia.org/wiki/Vector_graphics -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept9">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Polygon</dt>
+                        <dd>A figure bounded by edges that are all straight lines.</dd>
+                        <!-- https://en.wiktionary.org/wiki/polygon -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept8">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Linear Ring</dt>
+                        <dd>A connected series of line segments, defined by a series of points. The first and the last vertices are also connected by a line segment.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Polygonal_chain -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept11">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Snap</dt>
+                        <dd>In computer graphics, snapping allows an object to be easily positioned in alignment with grid lines, guide lines or another object, by causing it to automatically jump to an exact position when the user drags it to the proximity of the desired location. </dd>
+                        <!-- https://en.wikipedia.org/wiki/Snap_(computer_graphics) -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept12">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Alpha value</dt>
+                        <dd>The level of translucency of a color, as determined by the alpha channel.</dd>
+                        <!-- https://en.wiktionary.org/wiki/alpha -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept7">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Graticule</dt>
+                        <dd>The network of lines of latitude and longitude that make up a coordinate system such as the one used for the Earth.</dd>
+                        <!-- https://en.wiktionary.org/wiki/graticule -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept13">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>ESRI:53009</dt>
+                        <dd>A map projection: Sphere Mollweide Projection</dd>
+                        <!-- https://en.wiktionary.org/wiki/alpha -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept6">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>EPSG:4326</dt>
+                        <dd>A map projection: World Geodetic System 1984 (used in GPS)</dd>
+                        <!-- https://epsg.io/4326 -->
+                    </dl>
+                </div>
+                
+                
+                <div class="annotation concept6006">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>EPSG:3857</dt>
+                        <dd>A map projection: Spherical Mercator</dd>
+                        <!-- https://epsg.io/4326 -->
+                    </dl>
+                </div>
+                
+                 <div class="annotation concept5">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Map Projection</dt>
+                        <dd>Any systematic method of transforming the spherical representation of the Earth's surface to a nonspherical surface, usually a plane. Maps cannot be created without map projections. All map projections necessarily distort the surface in some fashion.</dd>
+                        <!-- https://en.wikipedia.org/wiki/Map_projection, https://en.wiktionary.org/wiki/map_projection -->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept4">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Tiled Graphics</dt>
+                        <dd>Tiled graphics are when a computer graphics image is subdivided by a regular grid in optical space. Each section of the grid, or tile, is processed separately. </dd>
+                        <!--https://en.wikipedia.org/wiki/Tiled_rendering-->
+                    </dl>
+                </div>
+                
+                <div class="annotation concept3">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Layers</dt>
+                        <dd>Digital images can be formed by superimposing different images on top of each other.</dd>
+                        <!--https://en.wikipedia.org/wiki/Layers_(digital_image_editing)-->
+                    </dl>
+                </div>
+                
+                <!--<div class="annotation concept2">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>View</dt>
+                        <dd>????</dd>
+                    </dl>
+                </div>-->
+                
+                <div class="annotation concept1">
+                    <h5 class="concept">Concept</h5>
+                    <dl>
+                        <dt>Map</dt>
+                        <dd>A visual representation of an area, whether real or imaginary. </dd>
+                    </dl>
+                </div>
+  
+  
+              <div class="annotation template1">
+                <h5 class="template">Template</h5>
+                Create a map with a target, view and layer. <br>
+                JS:
+                <code><pre>
+new ol.Map({
+  <em class="note">// Set target</em>
+  target: '<em>targetId</em>', 
+  
+  <em class="note">// Create view</em>
+  view: new ol.View({ 
+      <em>options</em>
+  }),
+  layers: [
+    <em class="note">// Create layet with a source</em>
+    new ol.layer.<em>layerType</em>({
+      source: new ol.source.<em>sourceType</em>({
+        <em>options</em>
+      })
+    })
+  ]
+});
+                </pre></code>
+              </div>
+              
+              
+              <div class="annotation template2">
+                <h5 class="template">Template</h5>
+                Create a map with a Graticule. <br>
+                JS:
+                <code><pre>
+var map = new ol.Map( 
+      <em>options</em>
+});
+
+new ol.Graticule({
+  map: map
+});
+                </pre></code>
+              </div>
+              
+              <div class="annotation template3">
+                <h5 class="template">Template</h5>
+                Create a Polygon that approximates a circle. <br>
+                JS:
+                <code><pre>
+var circle = new ol.geom.Circle(<em>center</em>, <em>radius</em>);
+var circlePoly = ol.geom.Polygon.fromCircle(circle, <em>numberOfSides</em>);
+                </pre></code>
+              </div>
+              
+              <div class="annotation template4">
+                <h5 class="template">Template</h5>
+                Create a Polygon with a hole in it. <br>
+                JS:
+                <code><pre>
+var polygon = new ol.geom.Polygon();
+polygon.appendLinearRing(<em>outerLinerRing</em>);
+polygon.appendLinearRing(<em>innerLinerRing</em>);
+                </pre></code>
+              </div>
+              
+              <div class="annotation template5">
+                <h5 class="template">Template</h5>
+                Add a vector layer to a map <br>
+                JS:
+                <code><pre>
+var vectorSource = new ol.source.Vector({
+  <em>options</em>
+});
+
+var vectorLayer = new ol.layer.Vector({
+  source: vectorSource
+});
+
+<em>map</em>.addLayer(vectorLayer);
+                </pre></code>
+              </div>
+              
+              <div class="annotation template6">
+                <h5 class="template">Template</h5>
+                Create map with vector layer. <br>
+                JS:
+                <code><pre>
+var vectorSource = new ol.source.Vector({
+  <em>options</em>
+});
+
+var vectorLayer =  new ol.layer.Vector({
+  source: vectorSource,
+  <em>other options</em>
+});
+
+new ol.Map({
+  layers: [vectorLayer],
+  <em>other options</em>
+});
+                </pre></code>
+              </div>
+              
+              <div class="annotation template7">
+                <h5 class="template">Template</h5>
+                Create map with interactions. <br>
+                JS:
+                <code><pre>
+var map = new ol.Map({
+  <em>options</em>
+});
+
+map.addInteraction(new ol.interaction.Modify({
+  <em>options</em>
+}));
+                </pre></code>
+              </div>
+              
+<div class="annotation template8">
+                <h5 class="template">Template</h5>
+                Create map with a Sphere Mollweide projection. <br>
+                JS:
+                <code><pre>
+<em class="note">// Configure Sphere Mollweide Projection</em>
+proj4.defs('ESRI:53009', '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 ' +
+  '+b=6371000 +units=m +no_defs');
+var sphereMollweideProjection = new ol.proj.Projection({
+  code: 'ESRI:53009',
+  extent: [-18000000, -9100000,
+    18000000, 9200000],
+  worldExtent: [-179, -89.99, 179, 89.99]
+});
+
+<em class="note">// Create map with the Sphere Mollweide Projection</em>
+new ol.Map({
+  layers: [<em>layers</em>],
+  target: '<em>targetId</em>',
+  view: new ol.View({
+    projection: sphereMollweideProjection,
+    <em>other options...</em>
+  })
+});
+                </pre></code>
+              </div>
+              
+              <div class="annotation fact24">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.interaction.Snap(<em>options</em>)</code>
+                <p>Handles snapping of vector features while modifying or drawing them.  </p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>source - Snap to features from this source. Either this option or features should be provided</li>
+                </ul>
+              </div> 
+              
+             <div class="annotation fact23">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.interaction.Draw(<em>options</em>)</code>
+                <p>Interaction for drawing feature geometries. </p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>source - Destination source for the drawn features.</li>
+                    <li>type - Drawing type ('Point', 'LineString', 'Polygon', 'MultiPoint', 'MultiLineString', 'MultiPolygon' or 'Circle'). Required.</li>
+                </ul>
+              </div> 
+              
+              <div class="annotation fact22">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.interaction.Modify(<em>options</em>)</code>
+                <p>Interaction for modifying feature geometries. To modify features that have been added to an existing source, construct the modify interaction with the source option. </p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>source - The vector source with features to modify.</li>
+                </ul>
+              </div> 
+              
+             <div class="annotation fact21">
+                <h5 class="fact">Fact</h5>
+                <code>addInteraction(<em>interaction</em>)</code>
+                <p>Add the given interaction to the map.</p>
+              </div>  
+              
+              <div class="annotation fact25">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.proj.Projection(options)</code>
+                <p>Define a projection.</p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>code - The SRS identifier code, e.g. EPSG:4326. Required.</li>
+                    <li>extent - The validity extent for the SRS.</li>
+                    <li>worldExtent - The world extent for the SRS. </li>
+                </ul>
+              </div>  
+              
+              <div class="annotation fact20">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.style.Stroke(<em>options</em>)</code>
+                <p>Set fill style for vector features.</p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>color - A color, gradient or pattern.</li>
+                    <li>width - The line width.</li>
+                </ul>
+              </div>  
+              
+            <div class="annotation fact19">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.style.Fill(<em>options</em>)</code>
+                <p>Set fill style for vector features.</p>
+                <p>The <em>options</em> object has one field:</p>
+                <ul>
+                    <li>color - A color, gradient or pattern.</li>
+                </ul>
+              </div>  
+              
+              
+              <div class="annotation fact18">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.style.Style(<em>options</em>)</code>
+                <p>Container for vector feature rendering styles. </p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>fill - The fill style</li>
+                    <li>stroke - The stroke style. </li>
+                </ul>
+              </div>  
+              
+              
+              
+            <div class="annotation fact17">
+                <h5 class="fact">Fact</h5>
+                <code>ol.format.GeoJSON(options)</code>
+                <p>Feature format for reading and writing data in the GeoJSON format.</p>
+              </div>  
+                     
+              
+              <div class="annotation fact16">
+                <h5 class="fact">Fact</h5>
+                <code><em>map</em>.addLayer(layer)</code>
+                <p>Adds the given layer to the top of this map. If you want to add a layer elsewhere in the stack, use getLayers() and the methods available on ol.Collection.</p>
+              </div>  
+                            
+              <div class="annotation fact15">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.layer.Vector(options)</code>
+                <p>Creates a layer for vector data that is rendered client-side.</p>
+                <p>Some of the <em>options</em> object can have:</p>
+                <ul>
+                    <li>source - The vector source (required).</li>
+                    <li>style - The style settings for the layer. </li>
+                </ul>
+              </div>  
+              
+              <div class="annotation fact14">
+                <h5 class="fact">Fact</h5>
+                <code>new ol.Feature(geometry)</code>
+                <p>Creates a vector object for geographic features with a geometry and other attribute properties</p>
+              </div>  
+              
+              <div class="annotation fact13">
+                    <h5 class="fact">Fact</h5>
+                    <code>new ol.source.Vector(<em>options</em>)</code>
+                    <p>Provides a source of features for vector layers. Vector features provided by this source are suitable for editing. </p>
+                    <p>Some of the <em>options</em> object can have:</p>
+                    <ul>
+                        <li>features - The vector features.</li>
+                        <li>format - The feature format used by the XHR feature loader when url is set. Required if url is set, otherwise ignored. </li>
+                        <li>url - Setting this option instructs the source to load features using an XHR loader.</li>
+                    </ul>
+                </div>   
+              
+                <div class="annotation fact12">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>linearRing</em>.scale(<em>sx</em>, <em>sy</em>, <em>anchor</em>)</code>
+                    <p>Scale the geometry (with an optional origin). This modifies the geometry coordinates in place.</p>
+                    <ul>
+                        <li>sx - The scaling factor in the x-direction.</li>
+                        <li>sy (optional) - The scaling factor in the y-direction.</li>
+                        <li>anchor (optional) - The scale origin (defaults to the center of the geometry extent).</li>
+                    </ul>
+                </div>   
+              
+                <div class="annotation fact11">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>polygon</em>.getLinearRing(<em>index</em>)</code>
+                    <p>Return the Nth linear ring of the polygon geometry. The exterior linear ring is available at index 0 and the interior rings at index 1 and beyond. Return null if the given index is out of range. </p>
+                </div>   
+              
+              <div class="annotation fact10">
+                    <h5 class="fact">Fact</h5>
+                    <code><em>polygon</em>.appendLinearRing(<em>linearRing</em>)</code>
+                    <p>Append the passed linear ring to this polygon.</p>
+                </div>   
+              
+                <div class="annotation fact8">
+                    <h5 class="fact">Fact</h5>
+                    <code>new ol.geom.Polygon(<em>coordinates</em>, <em>layout</em>)</code>
+                    <p>Create a polygon geometry object:</p>
+                    <ul>
+                        <li>coordinates - Array of linear rings that define the polygon. The first linear ring of the array defines the outer-boundary or surface of the polygon. Each subsequent linear ring defines a hole in the surface of the polygon. </li>
+                        <li>layout (optional) - The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z') or measure ('M') coordinate is available.</li>
+                    </ul>
+                </div>   
+                
+                <div class="annotation fact9">
+                    <h5 class="fact">Fact</h5>
+                    <code>new ol.geom.LinearRing(<em>coordinates</em>, <em>layout</em>)</code>
+                    <p>Create a linear ring geometry object:</p>
+                    <ul>
+                        <li>coordinates - Array coordinates. </li>
+                        <li>layout (optional) - The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z') or measure ('M') coordinate is available.</li>
+                    </ul>
+                </div> 
+
+                <div class="annotation fact7">
+                    <h5 class="fact">Fact</h5>
+                    <code>ol.geom.Polygon.fromCircle(<em>circle</em>, <em>sides</em>, <em>angle</em>)</code>
+                    <p>Create a circle using the following parameters:</p>
+                    <ul>
+                        <li>circle - A circle geometry. </li>
+                        <li>sides (optional) - Number of sides of the polygon. Default is 32. </li>
+                        <li>angle (optional) - Start angle for the first vertex of the polygon in radians. Default is 0.</li>
+                    </ul>
+                </div>
+
+                <div class="annotation fact6">
+                    <h5 class="fact">Fact</h5>
+                    <code>ol.geom.Circle(<em>center</em>, <em>radius</em>, <em>layout</em>)</code>
+                    <p>Create a geometry circle object using the following parameters:</p>
+                    <ul>
+                        <li>center - The coordinates of the center of the circle. </li>
+                        <li>radius (optional) - The radius of the circle. </li>
+                        <li>layout (optional) - The coordinate layout for geometries, indicating whether a 3rd or 4th z ('Z') or measure ('M') coordinate is available. </li>
+                    </ul>
+                </div>
+  
+                <div class="annotation fact5">
+                    <h5 class="fact">Fact</h5>
+                    <code>new ol.Graticule(<em>options</em>)</code>
+                    <p>Render a grid for a coordinate system on a map.</p>
+                    <p>Some of the <em>options</em> object can have:</p>
+                    <ul>
+                        <li>map - Reference to an ol.Map object. </li>
+                        <li>maxLines - The maximum number of meridians and parallels from the center of the map. </li>
+                    </ul>
+                </div>
+  
+                <div class="annotation fact4">
+                    <h5 class="fact">Fact</h5>
+                    <code>ol.source.TileWMS(<em>options</em>)</code>
+                    <p>For layer sources that provide pre-rendered, tiled images in grids that are organized by zoom levels for specific resolutions</p>
+                    <p>Some of the <em>options</em> object can have:</p>
+                    <ul>
+                        <li>params - WMS request parameters. At least a LAYERS param is required. </li>
+                        <li>projection - The projection of the source.</li>
+                        <li>url - WMS service URL.</li>
+                    </ul>
+                </div>
+  
+               <div class="annotation fact3">
+                    <h5 class="fact">Fact</h5>
+                    <code>ol.layer.Tile(<em>options</em>)</code>
+                    <p>For layer sources that provide pre-rendered, tiled images in grids that are organized by zoom levels for specific resolutions</p>
+                    <p>Some of the <em>options</em> object can have:</p>
+                    <ul>
+                        <li>source - Source for this layer. Required.</li>
+                        <li>opacity - Opacity (0, 1). Default is 1.</li>
+                    </ul>
+                </div>
+  
+  
+                <div class="annotation fact2">
+                    <h5 class="fact">Fact</h5>
+                    <code>ol.View(<em>options</em>)</code>
+                    <p>This is the object to act upon to change the center, resolution, and rotation of the map.</p>
+                    <p>Some of the <em>options</em> object can have:</p>
+                    <ul>
+                        <li>center - The initial center for the view. The coordinate system for the center is specified with the projection option. Default is undefined, and layer sources will not be fetched if this is not set.</li>
+                        <li>extent - The extent that constrains the center, in other words, center cannot be set outside this extent. Default is undefined.</li>
+                        <li>projection - The projection. Default is EPSG:3857 (Spherical Mercator).</li>
+                        <li>resolution - The initial resolution for the view. The units are projection units per pixel (e.g. meters per pixel). An alternative to setting this is to set zoom. Default is undefined, and layer sources will not be fetched if neither this nor zoom are defined.</li>
+                        <li>zoom - Only used if resolution is not defined. Zoom level used to calculate the initial resolution for the view. The initial resolution is determined using the ol.View#constrainResolution method. </li>
+                    </ul>
+                </div>
+                
+                <div class="annotation fact1">
+                    <h5 class="fact">Fact</h5>
+                    <code>ol.Map(<em>options</em>)</code>
+                    <p>Creates a Map to display. The map is the core component of OpenLayers. For a map to render, a view, one or more layers, and a target container are needed.</p>
+                    <p>Some of the <em>options</em> object can have:</p>
+                    <ul>
+                        <li>interactions - Interactions that are initially added to the map. If not specified, <code>ol.interaction.defaults()</code> is used.</li>
+                        <li>layers - Layers. If this is not defined, a map with no layers will be rendered. Note that layers are rendered in the order supplied, so if you want, for example, a vector layer to appear on top of a tile layer, it must come after the tile layer.</li>
+                        <li>target - The container for the map, either the element itself or the id of the element. </li>
+                        <li>view - The map's view.  </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        </div>
+		<footer>
+		Code example derived from the <a href="https://openlayers.org/en/latest/examples/" target="_blank">official OpenLayers examples</a>. Some annotations are based on content from the <a href="https://openlayers.org/en/latest/apidoc/" target="_blank">OpenLayers API Documentation</a>, <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>, or <a href="https://www.wiktionary.org/" target="_blank">Wiktionary</a>.
+		</footer>
+    </body>
+</html>

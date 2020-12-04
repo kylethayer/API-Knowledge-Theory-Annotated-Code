@@ -1,0 +1,251 @@
+<html>
+    <head>
+        <title>Example Code (SlickGrid)</title>
+         <link rel="stylesheet" href="AdditionalInfo.css" type="text/css"/>
+                 <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script src="jquery.csv.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+        
+        <script src="AdditionalInfo.js"></script>
+    </head>
+    <body class="container">
+        <header><h1>Annotated Code</h1></header>
+        <div class="row">
+        <div class="col-sm-6">
+            Source Code
+        <div id="source-code">
+          
+          
+        <code class="source-code"><pre>
+
+var grid;
+var data = []
+<span class="highlight template1">var <span class="highlight concept2 fact2">columns = [
+  { id: "title", name: "Title", field: "title", width: 240, sortable: true },
+  { id: "c1", name: "Sort 1", field: "c1", width: 240, sortable: true },
+  { id: "c2", name: "Sort 2", field: "c2", width: 240, sortable: true },
+  { id: "c3", name: "Sort 3", field: "c3", width: 240, sortable: true }
+];</span>
+
+var <span class="highlight fact3">options = {
+  enableCellNavigation: false,
+  enableColumnReorder: false
+}</span>S;</span>
+
+var numberOfItems = 25000;
+var items = [];
+var indices;
+var isAsc = true;
+var currentSortCol = { id: "title" };
+var i;
+
+<span class="highlight template2">function getItem(index) {
+  return isAsc ? data[indices[currentSortCol.id][index]] : data[indices[currentSortCol.id][(data.length - 1) - index]];
+}
+
+function getLength() {
+  return data.length;
+}</span>
+
+function createGrid(){
+  <span class="highlight concept1 concept2 concept3 template1 template2">grid = new <span class="highlight fact1 fact2 fact3">Slick.Grid("#container", {getLength: getLength, getItem: getItem}, columns, options)</span>;</span>
+  grid.<span class="highlight fact4">onSort.subscribe(function (e, args) {
+    currentSortCol = <span class="highlight concept2">args.sortCol</span>;
+    isAsc = args.sortAsc;
+    grid.<span class="highlight concept3 fact5">invalidateAllRows()</span>;
+    grid.<span class="highlight fact6">render()</span>;
+  })</span>;
+}
+
+
+function randomize(items) {
+  var randomItems = $.extend(true, null, items), randomIndex, temp, index;
+  for (index = items.length; index-- &gt; 0;) {
+    randomIndex = Math.round(Math.random() * items.length - 1);
+    if (randomIndex &gt; -1) {
+      temp = randomItems[randomIndex];
+      randomItems[randomIndex] = randomItems[index];
+      randomItems[index] = temp;
+    }
+  }
+  return randomItems;
+}
+
+funtion createData(){
+  for (i = numberOfItems; i-- &gt; 0;) {
+    items[i] = i;
+    data[i] = {
+      title: "Task ".concat(i + 1)
+    };
+  }
+  indices = { title: items, c1: randomize(items), c2: randomize(items), c3: randomize(items) };
+  
+  for (i = numberOfItems; i-- &gt; 0;) {
+    data[indices.c1[i]].c1 = "Value ".concat(i + 1);
+    data[indices.c2[i]].c2 = "Value ".concat(i + 1);
+    data[indices.c3[i]].c3 = "Value ".concat(i + 1);
+  }
+}
+
+createData();
+createGrid();
+        </pre></code></div></div>
+        
+        
+        
+        <div class="col-sm-6 right-col">
+            <div id="annotation-header">
+            <div>Annotations</div>
+            <div>Search: <div class="btn-group">
+                      <input id="searchinput" type="search" class="form-control">
+                      <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                    </div>
+            </div>
+            </div>
+            <div id="annotations">
+              
+              <div class="annotation concept1">
+                <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Table (Grid)</dt>
+                    <dd>A table is an arrangement of data in rows and columns.</dd>
+                </dl>
+              </div>
+              
+              <div class="annotation concept2">
+                <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Column</dt>
+                    <dd>A vertical line of entries in a table, usually read from top to bottom.</dd>
+                </dl>
+              </div>
+              
+              <div class="annotation concept3">
+                <h5 class="concept">Concept</h5>
+                <dl>
+                    <dt>Row</dt>
+                    <dd>A horizontal arrangement of information.</dd>
+                </dl>
+              </div>
+              
+              
+              <!--<div class="annotation template1">
+                <h5 class="template">Template</h5>
+                Include SlickGrid after including JQuery (which it depends on) <br>
+                HTML:
+                <code><pre>
+  &lt;script src="lib/jquery-1.7.min.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/jquery.event.drag-2.2.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/slick.core.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/slick.grid.js"&gt;&lt;/script&gt;
+                </pre></code>
+              </div>-->
+              
+              <div class="annotation template1">
+                <h5 class="template">Template</h5>
+                Create Slick Grid with columns and options
+                <code><pre>
+var columns = [
+  { id: <em>id</em>, name: <em>name</em>, field: <em>field</em>, width: <em>width</em>, sortable: <em>true/false</em> },
+  <em>...</em>
+];
+
+var options = {
+  <em>options</em>
+};
+
+new Slick.Grid(<em>containerId</em>, <em>data</em>, columns, options);
+                </pre></code>
+              </div>
+              
+              
+              <div class="annotation template2">
+                <h5 class="template">Template</h5>
+                Create Slick Grid with custom data object
+                <code><pre>
+function getItem(index) {
+  <span class="note">// find item at given index</span>
+  return <em>item</em>;
+}
+
+function getLength() {
+  <span class="note">// find data length</span>
+  return <em>dataLength</em>;
+}
+
+grid = new Slick.Grid(<em>containerId</em>, {getLength: getLength, getItem: getItem}, <em>columns</em>, <em>options</em>);
+                </pre></code>
+              </div>
+              
+              
+              <div class="annotation fact1">
+                <h5 class="fact">Fact</h5>
+                <code>Slick.Grid</code>
+                <p>This function creates a SlickGrid in the HTML and returns a reference to the SlickGrid. Parameters:</p>
+                <ul>
+                  <li>container - Container node to create the grid in. This can be a DOM Element, a jQuery node, or a jQuery selector.</li>
+                  <li>data - Databinding source. This can either be a regular JavaScript array or a custom object exposing getItem(index) and getLength() functions. Data will be displayed in the order of the array or according to the getItem(index) order.</li>
+                  <li>columns - An array of column definition objects. See Column Options below for a list of options that can be included on each column definition object.</li>
+                  <li>options - Additional options. See Grid Options below for a list of options that can be included.</li>
+                </ul>
+              </div>
+              
+              <div class="annotation fact2">
+                <h5 class="fact">Fact</h5>
+                <code>ColumnOptions</code>
+                <p>These are options for column settings in SlickGrid. Options include:</p>
+                <ul>
+                  <li>field - The property name in the data object to pull content from. (This is assumed to be on the root of the data object.)</li>
+                  <li>id - A unique identifier for the column within the grid.</li>
+                  <li>name - The text to display on the column heading.</li>
+                  <li>sortable - If true, the column will be sortable by clicking on the header.</li>
+                </ul>
+              </div>
+              
+              <div class="annotation fact3">
+                <h5 class="fact">Fact</h5>
+                <code>GridOptions</code>
+                <p>These are options for grid settings in SlickGrid. Options include:</p>
+                <ul>
+                  <li>enableCellNavigation - Appears to enable cell virtualisation for optimised speed with large datasets</li>
+                  <li>enableColumnReorder - Enables users to drag and drop the columns into different orders.</li>
+                </ul>
+              </div>
+              
+              <div class="annotation fact4">
+                <h5 class="fact">Fact</h5>
+                <code><em>grid</em>.onSort.subscribe(<em>callbackFunction</em>)</code>
+                <p>This function Is called when the user clicks a column to sort. You must put code in here that does the sorting and updating. The callback takes two parameters:</p>
+                <ul>
+                  <li>e - Event information.</li>
+                  <li>args - sort information.</li>
+                </ul>
+              </div>
+              
+              <div class="annotation fact5">
+                <h5 class="fact">Fact</h5>
+                <code><em>grid</em>.invalidateAllRows()</code>
+                <p>This tells the grid that all rows in the table are invalid. (If render() is called after this, it will redraw the entire grid.)</p>
+              </div>
+              
+              <div class="annotation fact6">
+                <h5 class="fact">Fact</h5>
+                <code><em>grid</em>.render()</code>
+                <p>Rerenders rows in the DOM.</p>
+              </div>
+              
+            </div>
+        </div>
+        </div>
+		<footer>
+		Code example derived from the <a href="https://github.com/6pac/SlickGrid/wiki/Examples" target="_blank">official SlickGrid examples</a>. Some annotations are based on content from the <a href="https://github.com/6pac/SlickGrid/wiki" target="_blank">SlickGrid Documentation</a>, <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>, or <a href="https://www.wiktionary.org/" target="_blank">Wiktionary</a>.
+		</footer>
+    </body>
+</html>
